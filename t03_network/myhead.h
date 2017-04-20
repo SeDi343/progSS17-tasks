@@ -33,6 +33,7 @@
 
 #define DEBUG 1
 #define PORTNUMBER 8888 /* check "/etc/services" */
+#define HOSTNAME 127.0.0.1
 
 /* ---- ANSI FORMAT FOR TERMINAL ---- */
 
