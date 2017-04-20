@@ -17,13 +17,18 @@ int main(int argc, char *argv[])
 {
 	int clientsocket;
 	struct sockaddr_in clientaddr;
-	socklen_t adrsize;
-	int ret = 0;
-	char buffer[1024];
+	socklen_t addrsize;
+	char buffer[MEMSIZE];
 	
 /*------------------------------------------------------------------*/
 /* I N I T                                                          */
 /*------------------------------------------------------------------*/
+	
+	clientaddr.sin_family = AF_INET;
+	clientaddr.sin_addr.s_addr = inet_addr(HOSTNAME);
+	clientaddr.sin_port = htons(PORTNUMBER);
+	
+	memset(clientaddr.sin_zero, '\0', sizeof(clientaddr.sin_zero));
 	
 	clientsocket = socket(PF_INET, SOCK_STREAM, 0);
 	if (clientsocket == -1)
@@ -31,16 +36,30 @@ int main(int argc, char *argv[])
 		perror(BOLD"\nERROR: socket:"RESET);
 	}
 	
-	clientaddr.sin_family = AF_INET;
-	clientaddr.sin_addr.s_addr = inet_addr(HOSTNAME);
-	clientaddr.sin_port = htons(PORTNUMBER);
-	
-	memset(clientaddr.sin_zero, "\0", sizeof(clientaddr.sin_zero));
-	
 /*------------------------------------------------------------------*/
 /* C O N N E C T                                                    */
 /*------------------------------------------------------------------*/
 	
-	adrsize = sizeof(clientaddr);
+	addrsize = sizeof(clientaddr);
 	
+	if (connect(clientsocket, (struct sockaddr *) &clientaddr, addrsize) == -1)
+	{
+		perror(BOLD"\nERROR: connecting:"RESET);
+	}
+	
+	while(1)
+	{
+		memset(buffer, '\0', sizeof(buffer));
+		recv(clientsocket, buffer, MEMSIZE, 0);
+		printf("%s", buffer);
+		
+		if (strncmp(buffer, "Holy Zarquon Singingfish - you got it.", 38) == 0)
+		{
+			exit(EXIT_SUCCESS);
+		}
+		
+		memset(buffer, '\0', sizeof(buffer));
+		scanf("%s", buffer);
+		send(clientsocket, buffer, MEMSIZE, 0);
+	}
 }

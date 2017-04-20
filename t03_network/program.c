@@ -17,8 +17,8 @@
 
 int main(void)
 {
-	char buf[80];
-	char ans[80];
+	char buf[MEMSIZE];
+	char ans[MEMSIZE];
 	int readlen;
 	
 	while (strncmp(ans, "42", 2) != 0)
@@ -26,7 +26,7 @@ int main(void)
 		sprintf(buf, "What's the answer to god, the universe and everything? ");
 		write(1, buf, strlen(buf));
 		
-		readlen = read(0, ans, 5);
+		readlen = read(0, ans, MEMSIZE);
 		ans[readlen] = '\0';
 		
 		if (strncmp(ans, "42", 2) == 0)
@@ -41,5 +41,5 @@ int main(void)
 		}
 	}
 	
-	exit(0);
+	exit(EXIT_SUCCESS);
 }
