@@ -19,6 +19,7 @@ int main(int argc, char *argv[])
 	struct sockaddr_in clientaddr;
 	socklen_t addrsize;
 	char buffer[MEMSIZE];
+	int ret;
 	
 /*------------------------------------------------------------------*/
 /* I N I T                                                          */
@@ -50,7 +51,11 @@ int main(int argc, char *argv[])
 	while(1)
 	{
 		memset(buffer, '\0', sizeof(buffer));
-		recv(clientsocket, buffer, MEMSIZE, 0);
+		ret = recv(clientsocket, buffer, MEMSIZE, 0);
+		if (ret == -1)
+		{
+			perror(BOLD"\nERROR: recv: Failed receiving data"RESET);
+		}
 		printf("%s", buffer);
 		
 		if (strncmp(buffer, "Holy Zarquon Singingfish - "BOLD"you got it."RESET"\n\n", sizeof(buffer)) == 0)
@@ -60,6 +65,10 @@ int main(int argc, char *argv[])
 		
 		memset(buffer, '\0', sizeof(buffer));
 		scanf("%s", buffer);
-		send(clientsocket, buffer, MEMSIZE, 0);
+		ret = send(clientsocket, buffer, MEMSIZE, 0);
+		if (ret == -1)
+		{
+			perror(BOLD"\nERROR: send: Faild sending data"RESET);
+		}
 	}
 }
