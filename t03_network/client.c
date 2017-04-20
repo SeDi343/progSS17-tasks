@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
 		recv(clientsocket, buffer, MEMSIZE, 0);
 		printf("%s", buffer);
 		
-		if (strncmp(buffer, "Holy Zarquon Singingfish - you got it.", 38) == 0)
+		if (strncmp(buffer, "Holy Zarquon Singingfish - "BOLD"you got it."RESET"\n\n", sizeof(buffer)) == 0)
 		{
 			exit(EXIT_SUCCESS);
 		}

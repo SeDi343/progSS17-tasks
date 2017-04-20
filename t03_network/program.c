@@ -31,12 +31,12 @@ int main(void)
 		
 		if (strncmp(ans, "42", 2) == 0)
 		{
-			sprintf(buf, "\n\nHoly Zarquon Singingfish - "BOLD"you got it."RESET"\n\n");
+			sprintf(buf, "Holy Zarquon Singingfish - "BOLD"you got it."RESET"\n\n");
 			write(1, buf, strlen(buf));
 		}
 		else
 		{
-			sprintf(buf, "\n\nBelgium monkeyman; "BOLD"go sit in a corner and sing to your cat."RESET"\n\n");
+			sprintf(buf, "Belgium monkeyman; "BOLD"go sit in a corner and sing to your cat."RESET"\n\n");
 			write(1, buf, strlen(buf));
 		}
 	}
