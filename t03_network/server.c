@@ -125,7 +125,7 @@ int main(int argc, char *argv[])
  * Network Programming, Vol.1, 2nd Edition, p128
  */
 
-void SIGCHLD_handler(int signo)
+void SIGCHLD_handler(/*@unused@*/int signo)
 {
 	pid_t pid;
 	int stat;

@@ -33,7 +33,7 @@
 
 #define DEBUG 1
 #define PORTNUMBER 8888 /* check "/etc/services" */
-#define HOSTNAME 127.0.0.1
+#define HOSTNAME "127.0.0.1"
 
 /* ---- ANSI FORMAT FOR TERMINAL ---- */
 
@@ -60,8 +60,6 @@
 #define BACKWHITE     "\033[107m"            /* Background White */
 
 #define ITALIC        "\033[3m"              /* Italic Mode */
-
-
 
 void SIGCHLD_handler(int);
 void install_SIGCHLD_handler(void);

@@ -31,4 +31,16 @@ int main(int argc, char *argv[])
 		perror(BOLD"\nERROR: socket:"RESET);
 	}
 	
+	clientaddr.sin_family = AF_INET;
+	clientaddr.sin_addr.s_addr = inet_addr(HOSTNAME);
+	clientaddr.sin_port = htons(PORTNUMBER);
+	
+	memset(clientaddr.sin_zero, "\0", sizeof(clientaddr.sin_zero));
+	
+/*------------------------------------------------------------------*/
+/* C O N N E C T                                                    */
+/*------------------------------------------------------------------*/
+	
+	adrsize = sizeof(clientaddr);
+	
 }

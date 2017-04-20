@@ -27,7 +27,7 @@ int semaphore2;
 int sharedmemid;
 
 int cmpfunc (const void * a, const void * b);
-void cntrl_c_handler_server(int dummy);
+static void cntrl_c_handler_server(int dummy);
 
 int main(int argc, char *argv[])
 {

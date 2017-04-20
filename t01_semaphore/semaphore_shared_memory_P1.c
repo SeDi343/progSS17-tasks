@@ -25,7 +25,7 @@ int semaphore1;
 int semaphore2;
 int sharedmemid;
 
-void cntrl_c_handler_client(int dummy);
+static void cntrl_c_handler_client(int dummy);
 
 int main(int argc, char *argv[])
 {
