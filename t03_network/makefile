@@ -9,6 +9,7 @@ OBJCLIENT	= client.o myhead.h
 
 all: server client program clean
 
+
 server: $(OBJSERVER)
 	$(CC) $(CFLAGS) $(OBJSERVER) $(LDFLAGS)
 	mv a.out server
@@ -21,7 +22,7 @@ client: $(OBJCLIENT)
 	$(CC) $(CFLAGS) $(OBJCLIENT) $(LDFLAGS)
 	mv a.out client
 
-%.o: %.c
+%.o : %.c
 	$(CC) $(CFLAGS) -c $<
 
 clean:
