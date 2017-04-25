@@ -13,7 +13,10 @@
 #include <gtk/gtk.h>
 #include <string.h>
 
-// struct that collects all widgets we will use in various callbacks
+/*static GtkWidget *entry;*/
+
+/* ---- struct that collects all widgets we will use in various callbacks ---- */
+
 struct my_widgets
 {
 	GtkWidget *label_output_forename;
@@ -216,8 +219,8 @@ static void activate (GtkApplication* app, gpointer user_data)
 	
 /* ---- connect a signal when ENTER is hit within the entry box ---- */
 	
-	g_signal_connect (wid->input_entry_forename, "activate", G_CALLBACK (ok_clicked_forename), (gpointer) wid);
-	g_signal_connect (wid->input_entry_surname, "activate", G_CALLBACK(ok_clicked_surname), (gpointer) wid);
+	//g_signal_connect (wid->input_entry_surname, "activate", G_CALLBACK(ok_clicked_surname), (gpointer) wid);
+	//g_signal_connect (wid->input_entry_forename, "activate", G_CALLBACK (ok_clicked_forename), (gpointer) wid);
 	
 /* ---- create a headerbar ---- */
 	
@@ -247,9 +250,14 @@ static void activate (GtkApplication* app, gpointer user_data)
 	context = gtk_widget_get_style_context (ok_button);
 	gtk_style_context_add_class (context, "text-button");
 	gtk_style_context_add_class (context, "suggested-action");
-	gtk_header_bar_pack_end (GTK_HEADER_BAR (headerbar), ok_button)
-	;
+	gtk_header_bar_pack_end (GTK_HEADER_BAR (headerbar), ok_button);
+	
 /* ---- connect a signal when the OKAY button is clicked ---- */
+	
+/*	entry = gtk_entry_new();*/
+/*	*/
+/*	g_object_set (G_OBJECT (ok_button), "can-default", TRUE, "has-default", TRUE, NULL);*/
+/*	g_object_set (G_OBJECT (entry), "activates-default", TRUE, NULL);*/
 	
 	g_signal_connect (ok_button, "clicked", G_CALLBACK (ok_clicked_forename), (gpointer) wid);
 	g_signal_connect (ok_button, "clicked", G_CALLBACK (ok_clicked_surname), (gpointer) wid);
