@@ -6,6 +6,8 @@
  *
  * \version Rev.: 01, 25.04.2017 - Used lectors code example
  *          Rev.: 02, 25.04.2017 - Changing code for 2 inputs (Forename, Surname)
+ *          Rev.: 03, 25.04.2017 - Reduced everything to one function each button action
+ *          Rev.: 04, 25.04.2017 - Removed ENTER signal from forename
  *
  *
  */
@@ -181,7 +183,7 @@ static void activate (GtkApplication* app, gpointer user_data)
 	
 	//g_signal_connect (wid->input_entry_surname, "activate", G_CALLBACK(ok_clicked_surname), (gpointer) wid);
 	//g_signal_connect (wid->input_entry_forename, "activate", G_CALLBACK (ok_clicked_forename), (gpointer) wid);
-	g_signal_connect (wid->input_entry_forename, "activate", G_CALLBACK (ok_clicked), (gpointer) wid);
+	//g_signal_connect (wid->input_entry_forename, "activate", G_CALLBACK (ok_clicked), (gpointer) wid);
 	g_signal_connect (wid->input_entry_surname, "activate", G_CALLBACK (ok_clicked), (gpointer) wid);
 	
 /* ---- create a headerbar ---- */
