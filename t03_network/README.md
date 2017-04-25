@@ -14,7 +14,7 @@ make
 or
 <pre>
 clang -Wall --pedantic -D_POSIX_C_SOURCE=200809L server.c
-clang -Wall --pedantic -D_POSIX_C_SOURCE=200809L program.c
+clang -Wall --pedantic -D_POSIX_C_SOURCE=200809L serverprogram.c
 clang -Wall --pedantic -D_POSIX_C_SOURCE=200809L client.c
 </pre>
 
