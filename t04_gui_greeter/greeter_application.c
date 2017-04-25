@@ -54,7 +54,7 @@ static void ok_clicked_forename (GtkWidget *widget, gpointer data)
 /* INPUT FUNCTION FOR SURNAME */
 static void ok_clicked_surname (GtkWidget *widget, gpointer data)
 {
-	gchar *buffer3, *buffer4;
+	gchar *buffer1, *buffer2;
 	
 /* ----- obtain references to the widgets passed as generic data pointer ---- */
 	
@@ -62,15 +62,15 @@ static void ok_clicked_surname (GtkWidget *widget, gpointer data)
 	
 /* ----- obtain text from the entry box ----- */
 	
-	buffer3 = (gchar*) gtk_entry_get_text (GTK_ENTRY (wid->input_entry_surname));
-	buffer4 = g_malloc (sizeof (gchar) * (strlen (buffer3) + 2));
-	sprintf (buffer4, " %s!", buffer3);
+	buffer1 = (gchar*) gtk_entry_get_text (GTK_ENTRY (wid->input_entry_surname));
+	buffer2 = g_malloc (sizeof (gchar) * (strlen (buffer1) + 2));
+	sprintf (buffer2, " %s!", buffer1);
 	
 /* ---- write the final text to the label on top ---- */
 	
-	gtk_label_set_text (GTK_LABEL (wid->label_output_surname), buffer4);
+	gtk_label_set_text (GTK_LABEL (wid->label_output_surname), buffer2);
 	
-	g_free (buffer4);
+	g_free (buffer2);
 }
 
 /* CLEAR BUTTON USED FUNCTION FOR FORENAME */
@@ -87,7 +87,7 @@ static void clr_clicked_forename (GtkWidget *widget, gpointer data)
 	
 /* ---- put the placeholder text into the entry box ---- */
 	
-	gtk_entry_set_placeholder_text (GTK_ENTRY (wid->input_entry_forename), "e.g., Maximilian");
+	gtk_entry_set_placeholder_text (GTK_ENTRY (wid->input_entry_forename), "e.g. Maximilian");
 	
 /* ---- clear the label ----- */
 	
@@ -108,7 +108,7 @@ static void clr_clicked_surname (GtkWidget *widget, gpointer data)
 	
 /* ---- put the placeholder text into the entry box ---- */
 	
-	gtk_entry_set_placeholder_text (GTK_ENTRY (wid->input_entry_surname), "e.g., Mustermann");
+	gtk_entry_set_placeholder_text (GTK_ENTRY (wid->input_entry_surname), "e.g. Mustermann");
 	
 /* ---- clear the label ----- */
 	
@@ -120,7 +120,9 @@ static void apply_css (GtkWidget *widget, GtkStyleProvider *provider)
 {
 	gtk_style_context_add_provider (gtk_widget_get_style_context (widget), provider, G_MAXUINT);
 	if (GTK_IS_CONTAINER (widget))
+	{
 		gtk_container_forall (GTK_CONTAINER (widget), (GtkCallback) apply_css, provider);
+	}
 }
 
 /* APP ACTIVATE CALLBACK - CREATES THE WINDOW */
@@ -199,8 +201,8 @@ static void activate (GtkApplication* app, gpointer user_data)
 	wid->input_entry_surname = gtk_entry_new();
 	gtk_grid_attach (GTK_GRID (grid), wid->input_entry_forename, 1, 1, 1, 1);
 	gtk_grid_attach (GTK_GRID (grid), wid->input_entry_surname, 1, 2, 1, 1);
-	gtk_entry_set_placeholder_text (GTK_ENTRY (wid->input_entry_forename), "e.g., Maximilian");
-	gtk_entry_set_placeholder_text (GTK_ENTRY (wid->input_entry_surname), "e.g., Mustermann");
+	gtk_entry_set_placeholder_text (GTK_ENTRY (wid->input_entry_forename), "e.g. Maximilian");
+	gtk_entry_set_placeholder_text (GTK_ENTRY (wid->input_entry_surname), "e.g. Mustermann");
 	
 /* ---- connect a signal when ENTER is hit within the entry box ---- */
 	
@@ -212,7 +214,7 @@ static void activate (GtkApplication* app, gpointer user_data)
 	headerbar = gtk_header_bar_new ();
 	gtk_widget_show (headerbar);
 	gtk_header_bar_set_title (GTK_HEADER_BAR (headerbar), "Name Printer");
-	gtk_header_bar_set_subtitle (GTK_HEADER_BAR (headerbar), "Welcome");
+	gtk_header_bar_set_subtitle (GTK_HEADER_BAR (headerbar), "Simple I/O GUI Program");
 	gtk_header_bar_set_show_close_button (GTK_HEADER_BAR (headerbar), TRUE);
 	gtk_window_set_titlebar (GTK_WINDOW (window), headerbar);
 	
