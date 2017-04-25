@@ -8,6 +8,7 @@
  *          Rev.: 02, 25.04.2017 - Changing code for 2 inputs (Forename, Surname)
  *          Rev.: 03, 25.04.2017 - Reduced everything to one function each button action
  *          Rev.: 04, 25.04.2017 - Removed ENTER signal from forename
+ *          Rev.: 05, 25.04.2017 - Removed Useless comments due to old functions
  *
  *
  */
@@ -181,8 +182,6 @@ static void activate (GtkApplication* app, gpointer user_data)
 	
 /* ---- connect a signal when ENTER is hit within the entry box ---- */
 	
-	//g_signal_connect (wid->input_entry_surname, "activate", G_CALLBACK(ok_clicked_surname), (gpointer) wid);
-	//g_signal_connect (wid->input_entry_forename, "activate", G_CALLBACK (ok_clicked_forename), (gpointer) wid);
 	//g_signal_connect (wid->input_entry_forename, "activate", G_CALLBACK (ok_clicked), (gpointer) wid);
 	g_signal_connect (wid->input_entry_surname, "activate", G_CALLBACK (ok_clicked), (gpointer) wid);
 	
@@ -205,8 +204,6 @@ static void activate (GtkApplication* app, gpointer user_data)
 	
 /* ---- connect a signal when the CLEAR button is clicked ---- */
 	
-	//g_signal_connect (clr_button, "clicked", G_CALLBACK (clr_clicked_forename), (gpointer) wid);
-	//g_signal_connect (clr_button, "clicked", G_CALLBACK (clr_clicked_surname), (gpointer) wid);
 	g_signal_connect (clr_button, "clicked", G_CALLBACK (clr_clicked), (gpointer) wid);
 	
 /* ---- put a blue okay button to the left side of the header bar ---- */
@@ -219,8 +216,6 @@ static void activate (GtkApplication* app, gpointer user_data)
 	
 /* ---- connect a signal when the OKAY button is clicked ---- */
 	
-	//g_signal_connect (ok_button, "clicked", G_CALLBACK (ok_clicked_forename), (gpointer) wid);
-	//g_signal_connect (ok_button, "clicked", G_CALLBACK (ok_clicked_surname), (gpointer) wid);
 	g_signal_connect (ok_button, "clicked", G_CALLBACK (ok_clicked), (gpointer) wid);
 	
 /* ---- add a fancy background image ---- */
