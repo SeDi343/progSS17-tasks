@@ -1,9 +1,8 @@
 # t04_gui_greeter
   
-This is a simple GUI Program using GTK+3 libs, it asks for name and welcomes,  
-you after pressing the OK Button.  
+This is a simple GUI Program using GTK+3 libs, it asks for name and welcomes, you after pressing the OK Button.  
   
-Compile the Program using  
+Compile the Program using:  
 <pre>
 make
 </pre>
