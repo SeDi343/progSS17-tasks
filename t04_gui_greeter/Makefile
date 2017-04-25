@@ -16,6 +16,9 @@ LDFLAGS  = -lm
 #-------------------------------------------------------------
 # Rules
 #
+
+all: $(TARGET) $(RESOURCE).c clean
+
 $(TARGET): $(SOURCES) $(RESOURCE).c
 	$(CXX) $(SOURCES) $(RESOURCE).c $(LDFLAGS) $(CXXFLAGS) -o $(TARGET)
 
@@ -24,5 +27,5 @@ $(RESOURCE).c: $(RESOURCE).gresource.xml
 
 .PHONY: clean
 clean:
-	@rm -rf $(OBJECTS) $(TARGET) core *~
+	@rm -rf $(OBJECTS) core *~
 	@rm -rf $(RESOURCE).c

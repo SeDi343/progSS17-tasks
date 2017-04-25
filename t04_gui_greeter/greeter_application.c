@@ -40,8 +40,11 @@ static void ok_clicked_forename (GtkWidget *widget, gpointer data)
 	
 /* ----- obtain text from the entry box ----- */
 	
+	
 	buffer1 = (gchar*) gtk_entry_get_text (GTK_ENTRY (wid->input_entry_forename));
+	
 	buffer2 = g_malloc (sizeof (gchar) * (strlen (buffer1) + 7));
+	
 	sprintf (buffer2, "Hello, %s", buffer1);
 	
 /* ---- write the final text to the label on top ---- */
@@ -63,11 +66,14 @@ static void ok_clicked_surname (GtkWidget *widget, gpointer data)
 /* ----- obtain text from the entry box ----- */
 	
 	buffer1 = (gchar*) gtk_entry_get_text (GTK_ENTRY (wid->input_entry_surname));
+	
 	buffer2 = g_malloc (sizeof (gchar) * (strlen (buffer1) + 2));
+	
 	sprintf (buffer2, " %s!", buffer1);
 	
 /* ---- write the final text to the label on top ---- */
 	
+	gtk_widget_set_name(wid->label_output_surname, "style_output_bold");
 	gtk_label_set_text (GTK_LABEL (wid->label_output_surname), buffer2);
 	
 	g_free (buffer2);
@@ -112,6 +118,7 @@ static void clr_clicked_surname (GtkWidget *widget, gpointer data)
 	
 /* ---- clear the label ----- */
 	
+	gtk_widget_set_name(wid->label_output_surname, "style_output");
 	gtk_label_set_text (GTK_LABEL (wid->label_output_surname), "What's Your name?");
 }
 
@@ -140,6 +147,9 @@ static void activate (GtkApplication* app, gpointer user_data)
 	GtkStyleContext *context;
 	GtkStyleProvider *provider;
 	GtkWidget *box;
+	GtkWidget *backgroundimage;
+	GtkWidget *layout;
+	
 	
 /* ----- obtain references to the widgets passed as generic data pointer ---- */
 	
@@ -249,6 +259,15 @@ static void activate (GtkApplication* app, gpointer user_data)
 	provider = GTK_STYLE_PROVIDER (gtk_css_provider_new ());
 	gtk_css_provider_load_from_resource (GTK_CSS_PROVIDER (provider), "/css_greeter/css_greeter.css");
 	apply_css (window, provider);
+	
+/* ---- cant find the reason why background is not loading ---- */
+	
+	layout = gtk_layout_new(NULL, NULL);
+	gtk_container_add(GTK_CONTAINER(window), layout);
+	gtk_widget_show(layout);
+	
+	backgroundimage = gtk_image_new_from_file("background.jpg");
+	gtk_layout_put(GTK_LAYOUT(layout), backgroundimage, 0, 0);
 	
 /* ----- end of background image ----- */
 
