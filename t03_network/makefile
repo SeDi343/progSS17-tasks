@@ -1,22 +1,21 @@
 VERSION	= 1.0
-CC	= gcc
+CC	= clang
 CFLAGS	= -Wall --pedantic -D_POSIX_C_SOURCE=200809L -g -D_REENTRANT -DVERSION=\"$(VERSION)\"
 LDFLAGS	=
 
-OBJSERVER	= server.o myhead.h
-OBJCPROG	= program.o myhead.h
-OBJCLIENT	= client.o myhead.h
+OBJSERVER	= server.o
+OBJCPROG	= serverprogram.o
+OBJCLIENT	= client.o
 
 all: server client program clean
-
 
 server: $(OBJSERVER)
 	$(CC) $(CFLAGS) $(OBJSERVER) $(LDFLAGS)
 	mv a.out server
 
-program: $(OBJPROG)
-	$(CC) $(CFLAGS) $(OBJPROG) $(LDFLAGS)
-	mv a.out program
+program: $(OBJCPROG)
+	$(CC) $(CFLAGS) $(OBJCPROG) $(LDFLAGS)
+	mv a.out serverprogram
 
 client: $(OBJCLIENT)
 	$(CC) $(CFLAGS) $(OBJCLIENT) $(LDFLAGS)

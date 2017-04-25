@@ -102,7 +102,7 @@ int main(int argc, char *argv[])
 			
 /* ---- Run a STDIN/STDOUT application ---- */
 			
-			ret = execlp("./program", "program", (char *)NULL);
+			ret = execlp("./serverprogram", "serverprogram", (char *)NULL);
 			if (ret == -1)
 			{
 				perror(BOLD"\nERROR: execlp:"RESET);
