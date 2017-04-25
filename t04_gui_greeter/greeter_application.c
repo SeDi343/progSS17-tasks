@@ -13,8 +13,6 @@
 #include <gtk/gtk.h>
 #include <string.h>
 
-/*static GtkWidget *entry;*/
-
 /* ---- struct that collects all widgets we will use in various callbacks ---- */
 
 struct my_widgets
@@ -32,58 +30,38 @@ struct my_widgets
 */
 /*------------------------------------------------------------------*/
 
-/* INPUT FUNCTION FOR FORENAME */
-static void ok_clicked_forename (GtkWidget *widget, gpointer data)
+/* INPUT FUNCTION */
+static void ok_clicked (GtkWidget *widget, gpointer data)
 {
-	gchar *buffer1, *buffer2;
+	gchar *buffer1, *buffer2, *buffer3, *buffer4;
 	
 /* ----- obtain references to the widgets passed as generic data pointer ---- */
 	
 	struct my_widgets *wid = (struct my_widgets*) data;
 	
 /* ----- obtain text from the entry box ----- */
-	
 	
 	buffer1 = (gchar*) gtk_entry_get_text (GTK_ENTRY (wid->input_entry_forename));
-	
-	buffer2 = g_malloc (sizeof (gchar) * (strlen (buffer1) + 7));
-	
+	buffer2 = g_malloc (sizeof (gchar) * (strlen (buffer1) + 7));	
 	sprintf (buffer2, "Hello, %s", buffer1);
 	
-/* ---- write the final text to the label on top ---- */
+	buffer3 = (gchar*) gtk_entry_get_text (GTK_ENTRY (wid->input_entry_surname));
+	buffer4 = g_malloc (sizeof (gchar) * (strlen (buffer3) + 2));
+	sprintf (buffer4, " %s!", buffer3);
 	
+/* ---- write the final text to the label on top ---- */
+
 	gtk_label_set_text (GTK_LABEL (wid->label_output_forename), buffer2);
 	
-	g_free (buffer2);
-}
-
-/* INPUT FUNCTION FOR SURNAME */
-static void ok_clicked_surname (GtkWidget *widget, gpointer data)
-{
-	gchar *buffer1, *buffer2;
-	
-/* ----- obtain references to the widgets passed as generic data pointer ---- */
-	
-	struct my_widgets *wid = (struct my_widgets*) data;
-	
-/* ----- obtain text from the entry box ----- */
-	
-	buffer1 = (gchar*) gtk_entry_get_text (GTK_ENTRY (wid->input_entry_surname));
-	
-	buffer2 = g_malloc (sizeof (gchar) * (strlen (buffer1) + 2));
-	
-	sprintf (buffer2, " %s!", buffer1);
-	
-/* ---- write the final text to the label on top ---- */
-	
 	gtk_widget_set_name(wid->label_output_surname, "style_output_bold");
-	gtk_label_set_text (GTK_LABEL (wid->label_output_surname), buffer2);
+	gtk_label_set_text (GTK_LABEL (wid->label_output_surname), buffer4);
 	
 	g_free (buffer2);
+	g_free (buffer4);
 }
 
-/* CLEAR BUTTON USED FUNCTION FOR FORENAME */
-static void clr_clicked_forename (GtkWidget *widget, gpointer data)
+/* CLEAR BUTTON USED FUNCTION */
+static void clr_clicked (GtkWidget *widget, gpointer data)
 {
 	
 /* ----- obtain references to the widgets passed as generic data pointer ---- */
@@ -91,36 +69,18 @@ static void clr_clicked_forename (GtkWidget *widget, gpointer data)
 	struct my_widgets *wid = (struct my_widgets*) data;
 	
 /* ---- clear the entry box ----- */
-
+	
 	gtk_entry_set_text (GTK_ENTRY (wid->input_entry_forename), "");
-	
-/* ---- put the placeholder text into the entry box ---- */
-	
-	gtk_entry_set_placeholder_text (GTK_ENTRY (wid->input_entry_forename), "e.g. Maximilian");
-	
-/* ---- clear the label ----- */
-	
-	gtk_label_set_text (GTK_LABEL (wid->label_output_forename), "Hello?");
-}
-
-/* CLEAR BUTTON USED FUNCTION FOR SURNAME */
-static void clr_clicked_surname (GtkWidget *widget, gpointer data)
-{
-	
-/* ----- obtain references to the widgets passed as generic data pointer ---- */
-	
-	struct my_widgets *wid = (struct my_widgets*) data;
-	
-/* ---- clear the entry box ----- */
-	
 	gtk_entry_set_text (GTK_ENTRY (wid->input_entry_surname), "");
 	
 /* ---- put the placeholder text into the entry box ---- */
 	
+	gtk_entry_set_placeholder_text (GTK_ENTRY (wid->input_entry_forename), "e.g. Maximilian");
 	gtk_entry_set_placeholder_text (GTK_ENTRY (wid->input_entry_surname), "e.g. Mustermann");
 	
 /* ---- clear the label ----- */
 	
+	gtk_label_set_text (GTK_LABEL (wid->label_output_forename), "Hello?");
 	gtk_widget_set_name(wid->label_output_surname, "style_output");
 	gtk_label_set_text (GTK_LABEL (wid->label_output_surname), "What's Your name?");
 }
@@ -221,6 +181,8 @@ static void activate (GtkApplication* app, gpointer user_data)
 	
 	//g_signal_connect (wid->input_entry_surname, "activate", G_CALLBACK(ok_clicked_surname), (gpointer) wid);
 	//g_signal_connect (wid->input_entry_forename, "activate", G_CALLBACK (ok_clicked_forename), (gpointer) wid);
+	g_signal_connect (wid->input_entry_forename, "activate", G_CALLBACK (ok_clicked), (gpointer) wid);
+	g_signal_connect (wid->input_entry_surname, "activate", G_CALLBACK (ok_clicked), (gpointer) wid);
 	
 /* ---- create a headerbar ---- */
 	
@@ -241,8 +203,9 @@ static void activate (GtkApplication* app, gpointer user_data)
 	
 /* ---- connect a signal when the CLEAR button is clicked ---- */
 	
-	g_signal_connect (clr_button, "clicked", G_CALLBACK (clr_clicked_forename), (gpointer) wid);
-	g_signal_connect (clr_button, "clicked", G_CALLBACK (clr_clicked_surname), (gpointer) wid);
+	//g_signal_connect (clr_button, "clicked", G_CALLBACK (clr_clicked_forename), (gpointer) wid);
+	//g_signal_connect (clr_button, "clicked", G_CALLBACK (clr_clicked_surname), (gpointer) wid);
+	g_signal_connect (clr_button, "clicked", G_CALLBACK (clr_clicked), (gpointer) wid);
 	
 /* ---- put a blue okay button to the left side of the header bar ---- */
 	
@@ -254,13 +217,9 @@ static void activate (GtkApplication* app, gpointer user_data)
 	
 /* ---- connect a signal when the OKAY button is clicked ---- */
 	
-/*	entry = gtk_entry_new();*/
-/*	*/
-/*	g_object_set (G_OBJECT (ok_button), "can-default", TRUE, "has-default", TRUE, NULL);*/
-/*	g_object_set (G_OBJECT (entry), "activates-default", TRUE, NULL);*/
-	
-	g_signal_connect (ok_button, "clicked", G_CALLBACK (ok_clicked_forename), (gpointer) wid);
-	g_signal_connect (ok_button, "clicked", G_CALLBACK (ok_clicked_surname), (gpointer) wid);
+	//g_signal_connect (ok_button, "clicked", G_CALLBACK (ok_clicked_forename), (gpointer) wid);
+	//g_signal_connect (ok_button, "clicked", G_CALLBACK (ok_clicked_surname), (gpointer) wid);
+	g_signal_connect (ok_button, "clicked", G_CALLBACK (ok_clicked), (gpointer) wid);
 	
 /* ---- add a fancy background image ---- */
 	
