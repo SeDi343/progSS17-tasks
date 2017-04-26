@@ -6,15 +6,23 @@
  *
  * \version Rev.: 01, 25.04.2017 - Used lectors code example
  *          Rev.: 02, 25.04.2017 - Changing code for 2 inputs (Forename, Surname)
- *          Rev.: 03, 25.04.2017 - Reduced everything to one function each button action
+ *          Rev.: 03, 25.04.2017 - Reduced everything to one function each button
+ *                                 action
  *          Rev.: 04, 25.04.2017 - Removed ENTER signal from forename
  *          Rev.: 05, 25.04.2017 - Removed Useless comments due to old functions
+ *          Rev.: 06, 26.04.2017 - Added some new functions under GTK_OLD for
+ *                                 older gtk Versions
+ *          Rev.: 07, 26.04.2017 - Added background, font-style but no fix for
+ *                                 background corners
  *
  *
  */
 
 #include <gtk/gtk.h>
 #include <string.h>
+
+#define GTK_OLD 1
+#define GTK_NEW 0
 
 /* ---- struct that collects all widgets we will use in various callbacks ---- */
 
@@ -44,17 +52,17 @@ static void ok_clicked (GtkWidget *widget, gpointer data)
 	
 /* ----- obtain text from the entry box ----- */
 	
-	buffer1 = (gchar*) gtk_entry_get_text (GTK_ENTRY (wid->input_entry_forename));
-	buffer2 = g_malloc (sizeof (gchar) * (strlen (buffer1) + 7));	
+	buffer1 = (gchar*)gtk_entry_get_text(GTK_ENTRY(wid->input_entry_forename));
+	buffer2 = g_malloc(sizeof(gchar) * (strlen(buffer1) + 7));	
 	sprintf (buffer2, "Hello, %s", buffer1);
 	
-	buffer3 = (gchar*) gtk_entry_get_text (GTK_ENTRY (wid->input_entry_surname));
-	buffer4 = g_malloc (sizeof (gchar) * (strlen (buffer3) + 2));
+	buffer3 = (gchar*)gtk_entry_get_text(GTK_ENTRY(wid->input_entry_surname));
+	buffer4 = g_malloc(sizeof(gchar) * (strlen(buffer3) + 2));
 	sprintf (buffer4, " %s!", buffer3);
 	
 /* ---- write the final text to the label on top ---- */
 
-	gtk_label_set_text (GTK_LABEL (wid->label_output_forename), buffer2);
+	gtk_label_set_text(GTK_LABEL(wid->label_output_forename), buffer2);
 	
 	gtk_widget_set_name(wid->label_output_surname, "style_output_bold");
 	gtk_label_set_text(GTK_LABEL(wid->label_output_surname), buffer4);
@@ -88,7 +96,9 @@ static void clr_clicked (GtkWidget *widget, gpointer data)
 	gtk_label_set_text(GTK_LABEL(wid->label_output_surname), "What's Your name?");
 }
 
-/* FUNCTION TO APPLY BACKGROUND (NOT WORKING) */
+/* FUNCTION TO APPLY BACKGROUND */
+
+#if GTK_NEW
 static void apply_css (GtkWidget *widget, GtkStyleProvider *provider)
 {
 	gtk_style_context_add_provider(gtk_widget_get_style_context(widget), provider, G_MAXUINT);
@@ -97,6 +107,7 @@ static void apply_css (GtkWidget *widget, GtkStyleProvider *provider)
 		gtk_container_forall(GTK_CONTAINER (widget), (GtkCallback)apply_css, provider);
 	}
 }
+#endif
 
 /* APP ACTIVATE CALLBACK - CREATES THE WINDOW */
 static void activate (GtkApplication* app, gpointer user_data)
@@ -111,11 +122,15 @@ static void activate (GtkApplication* app, gpointer user_data)
 	GtkWidget *clr_button, *ok_button;
 	GtkWidget *headerbar;
 	GtkStyleContext *context;
-	GtkStyleProvider *provider;
 	GtkWidget *box;
-	GtkWidget *backgroundimage;
-	GtkWidget *layout;
-	
+#if GTK_NEW
+	GtkStyleProvider *provider;
+#endif
+#if GTK_OLD
+	GtkCssProvider *provider;
+	GdkDisplay *display;
+	GdkScreen *screen;
+#endif	
 	
 /* ----- obtain references to the widgets passed as generic data pointer ---- */
 	
@@ -137,7 +152,7 @@ static void activate (GtkApplication* app, gpointer user_data)
 	
 	gtk_grid_set_column_homogeneous(GTK_GRID (grid), FALSE);
 	gtk_container_add(GTK_CONTAINER(window), grid);
-	gtk_container_set_border_width(GTK_CONTAINER(window), 20);
+	gtk_container_set_border_width(GTK_CONTAINER(window), 10);
 	
 /*------------------------------------------------------------------*/
 /*
@@ -240,18 +255,42 @@ static void activate (GtkApplication* app, gpointer user_data)
 	
 /* ---- add a fancy background image ---- */
 	
+#if GTK_NEW
 	provider = GTK_STYLE_PROVIDER(gtk_css_provider_new());
 	gtk_css_provider_load_from_resource(GTK_CSS_PROVIDER(provider), "/css_greeter/css_greeter.css");
 	apply_css(window, provider);
+#endif
 	
 /* ---- cant find the reason why background is not loading ---- */
 	
-	layout = gtk_layout_new(NULL, NULL);
-	gtk_container_add(GTK_CONTAINER(window), layout);
-	gtk_widget_show(layout);
+#if GTK_OLD
+	provider = gtk_css_provider_new();
+	display = gdk_display_get_default();
+	screen = gdk_display_get_default_screen(display);
 	
-	backgroundimage = gtk_image_new_from_file("background.jpg");
-	gtk_layout_put(GTK_LAYOUT(layout), backgroundimage, 0, 0);
+	gtk_style_context_add_provider_for_screen(screen, GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+	gtk_css_provider_load_from_data(GTK_CSS_PROVIDER(provider), "GtkWindow {\n"
+																"	background-image: url('background.png');\n"
+																"   background-repeat: no-repeat;\n"
+																"   background-color: #ffffff;\n"
+																"   background-size: 100% auto;\n"
+																"}\n"
+																"#style_output\n"
+																"{\n"
+																"   color: #4A90D9;\n"
+																"   font-size: 32px;\n"
+																"   font-family: 'April Flowers';\n"
+																"   font-weight: normal;\n"
+																"}\n"
+																"#style_output_bold\n"
+																"{\n"
+																"   color: #4A90D9;\n"
+																"   font-size: 32px;\n"
+																"   font-family: 'April Flowers';\n"
+																"   font-weight: bold;\n"
+																"}\n", -1, NULL);
+	g_object_unref(provider);
+#endif
 	
 /* ----- end of background image ----- */
 

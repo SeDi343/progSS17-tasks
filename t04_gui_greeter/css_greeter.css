@@ -1,5 +1,7 @@
 window {
-	background-image: url('/css_greeter/background.jpg');
+	background-image: url('background.png');
+	background-repeat: no-repeat;
+	background-color: #ffffff;
 	background-size: 100% auto;
 }
 
