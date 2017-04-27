@@ -19,10 +19,14 @@
  */
 
 #include <gtk/gtk.h>
+#include <glib.h>
+#include <glib/gprintf.h>
 #include <string.h>
 
 #define GTK_OLD 1
 #define GTK_NEW 0
+
+#define BUTTON_AMMOUNT 2
 
 /* ---- struct that collects all widgets we will use in various callbacks ---- */
 
@@ -32,6 +36,9 @@ struct my_widgets
 	GtkWidget *input_entry_forename;
 	GtkWidget *label_output_surname;
 	GtkWidget *input_entry_surname;
+	GtkWidget *input_check_button;
+	GtkWidget *input_radio[BUTTON_AMMOUNT];
+	GtkWidget *label_gender;
 };
 
 /*------------------------------------------------------------------*/
@@ -96,6 +103,71 @@ static void clr_clicked (GtkWidget *widget, gpointer data)
 	gtk_label_set_text(GTK_LABEL(wid->label_output_surname), "What's Your name?");
 }
 
+/* CHECK BUTTON FUNCTION FOR GENDER ENABLE/DISABLE */
+static void check_button_toggle (GtkWidget *widget, gpointer data)
+{
+	
+/* ----- obtain references to the widgets passed as generic data pointer ---- */
+	
+	struct my_widgets *wid = (struct my_widgets *)data;
+	gboolean radio[BUTTON_AMMOUNT];
+	gint i;
+	
+/* ---- if button is used ---- */
+	
+	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(wid->input_check_button)))
+	{
+	
+/* ---- activate radios ---- */
+
+		for (i = 0; i < BUTTON_AMMOUNT; i++)
+		{
+			gtk_widget_set_sensitive(GTK_WIDGET(wid->input_radio[i]), TRUE);
+		}
+		
+/* ---- default false ---- */
+		
+		for (i = 0; i < BUTTON_AMMOUNT; i++)
+		{
+			radio[i] = FALSE;
+		}
+		
+/* ---- check which one is used ---- */
+		
+		for (i = 0; i < BUTTON_AMMOUNT; i++)
+		{
+			radio[i] = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(wid->input_radio[i]));
+		}
+		
+/* ---- which one is used and print gender into output --- */
+		
+		if (radio[0] == TRUE)
+		{
+			gtk_label_set_text(GTK_LABEL(wid->label_gender), " Gender: female");
+		}
+		
+		if (radio[1] == TRUE)
+		{
+			gtk_label_set_text(GTK_LABEL(wid->label_gender), " Gender: male");
+		}
+	}
+	
+/* ---- if button is used ---- */
+	
+	else
+	{
+
+/* ---- deactivate radios and print nothing into output ---- */
+		
+		gtk_label_set_text(GTK_LABEL(wid->label_gender), "");
+		
+		for (i = 0; i < BUTTON_AMMOUNT; i++)
+		{
+			gtk_widget_set_sensitive(GTK_WIDGET(wid->input_radio[i]), FALSE);
+		}
+	}
+}
+
 /* FUNCTION TO APPLY BACKGROUND */
 
 #if GTK_NEW
@@ -122,7 +194,9 @@ static void activate (GtkApplication* app, gpointer user_data)
 	GtkWidget *clr_button, *ok_button;
 	GtkWidget *headerbar;
 	GtkStyleContext *context;
-	GtkWidget *box;
+	GtkWidget *box_1;
+	GtkWidget *box_2;
+	GtkWidget *sep;
 #if GTK_NEW
 	GtkStyleProvider *provider;
 #endif
@@ -130,7 +204,9 @@ static void activate (GtkApplication* app, gpointer user_data)
 	GtkCssProvider *provider;
 	GdkDisplay *display;
 	GdkScreen *screen;
-#endif	
+#endif
+	
+	gint i;
 	
 /* ----- obtain references to the widgets passed as generic data pointer ---- */
 	
@@ -165,23 +241,27 @@ static void activate (GtkApplication* app, gpointer user_data)
 */
 /*------------------------------------------------------------------*/
 	
-	box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+	box_1 = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
 	
 	wid->label_output_forename = gtk_label_new("Hello?");
 	wid->label_output_surname = gtk_label_new("What's Your name?");
+	wid->label_gender = gtk_label_new("");
 	
 /* ---- name the label so that we can reference it from the CSS file ---- */
 	
 	gtk_widget_set_name(wid->label_output_forename, "style_output");
 	gtk_widget_set_name(wid->label_output_surname, "style_output");
+	gtk_widget_set_name(wid->label_gender, "style_output");
 	
-	gtk_box_pack_start(GTK_BOX(box), wid->label_output_forename, TRUE, TRUE, 0);
-	gtk_box_pack_start(GTK_BOX(box), wid->label_output_surname, TRUE, TRUE, 0);
+	gtk_box_pack_start(GTK_BOX(box_1), wid->label_output_forename, TRUE, TRUE, 0);
+	gtk_box_pack_start(GTK_BOX(box_1), wid->label_output_surname, TRUE, TRUE, 0);
+	gtk_box_pack_start(GTK_BOX(box_1), wid->label_gender, TRUE, TRUE, 0);
 	
 	gtk_widget_set_size_request(wid->label_output_forename, 150, 50);
 	gtk_widget_set_size_request(wid->label_output_surname, 100, 50);
+	gtk_widget_set_size_request(wid->label_gender, 100, 50);
 	
-	gtk_grid_attach(GTK_GRID(grid), box, 0, 0, 2, 1);
+	gtk_grid_attach(GTK_GRID(grid), box_1, 0, 0, 2, 1);
 
 /* ---- name label - label text horizontally aligned at towards the end ---- */
 	
@@ -207,6 +287,39 @@ static void activate (GtkApplication* app, gpointer user_data)
 	
 	gtk_entry_set_placeholder_text(GTK_ENTRY(wid->input_entry_forename), "e.g. Maximilian");
 	gtk_entry_set_placeholder_text(GTK_ENTRY(wid->input_entry_surname), "e.g. Mustermann");
+	
+/* ---- Add a separator ---- */
+	
+	box_2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+	gtk_container_add(GTK_CONTAINER(window), box_2);
+	gtk_grid_attach(GTK_GRID(grid), box_2, 1, 3, 2, 1);
+	
+	sep = gtk_separator_new(GTK_ORIENTATION_HORIZONTAL);
+	gtk_box_pack_start(GTK_BOX(box_2), sep, FALSE, TRUE, 5);
+	
+/* ---- Add check button ---- */
+	
+	wid->input_check_button = gtk_check_button_new_with_label("Enable / Disable Gender");
+	gtk_box_pack_start(GTK_BOX(box_2), wid->input_check_button, FALSE, TRUE, 0);
+	g_signal_connect(wid->input_check_button, "toggled", G_CALLBACK(check_button_toggle), (gpointer)wid);
+	
+	wid->input_radio[0] = gtk_radio_button_new_with_label(NULL, "Female");
+	wid->input_radio[1] = gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(wid->input_radio[0]), "Male");
+	
+	for (i = 0; i < BUTTON_AMMOUNT; i++)
+	{
+		gtk_box_pack_start(GTK_BOX(box_2), wid->input_radio[i], FALSE, TRUE, 0);
+	}
+	
+	for (i = 0; i < BUTTON_AMMOUNT; i++)
+	{
+		g_signal_connect(G_OBJECT(wid->input_radio[i]), "toggled", G_CALLBACK(check_button_toggle), (gpointer)wid);
+	}
+	
+	for (i = 0; i < BUTTON_AMMOUNT; i++)
+	{
+		gtk_widget_set_sensitive(GTK_WIDGET(wid->input_radio[i]), FALSE);
+	}
 	
 /* ---- connect a signal when ENTER is hit within the entry box ---- */
 	

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/css_greeter">
+    <file>css_greeter.css</file>
+    <file>background.jpg</file>
+    <file>April-Flowers.ttf</file>
+    <file>MarckScript-Regular.ttf</file>
+  </gresource>
+</gresources>
+

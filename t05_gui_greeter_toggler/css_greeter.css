@@ -1,0 +1,44 @@
+window {
+	background-image: url('background.png');
+	background-repeat: no-repeat;
+	background-color: #ffffff;
+	background-size: 100% auto;
+}
+
+/* In order to select the label using a name use gtk_widget_set_name() in the
+   code to give it a name. Within the CSS you may reference it using 
+   "#name" as shown below.
+   See https://thegnomejournal.wordpress.com/2011/03/15/styling-gtk-with-css/
+   for further information.
+*/
+#style_output
+{
+	color: #4A90D9;
+	font-size: 32px;
+	font-family: "April Flowers";
+	font-weight: normal;
+}
+
+#style_output_bold
+{
+	color: #4A90D9;
+	font-size: 32px;
+	font-family: "April Flowers";
+	font-weight: bold;
+}
+
+#style_google
+{
+	color: #4A90D9;
+	font-size: 24px;
+	font-family: "Marck Script";
+	font-weight: normal;
+}
+
+#style_google_bold
+{
+	color: #4A90D9;
+	font-size: 18px;
+	font-family: "Marck Script";
+	font-weight: bold;
+}
