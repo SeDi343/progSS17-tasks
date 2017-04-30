@@ -226,7 +226,7 @@ static void activate (GtkApplication* app, gpointer user_data)
 	
 	grid = gtk_grid_new();
 	
-	gtk_grid_set_column_homogeneous(GTK_GRID (grid), FALSE);
+	gtk_grid_set_column_homogeneous(GTK_GRID(grid), FALSE);
 	gtk_container_add(GTK_CONTAINER(window), grid);
 	gtk_container_set_border_width(GTK_CONTAINER(window), 30);
 	
@@ -417,7 +417,7 @@ int main (int argc, char **argv)
 	
 /* ---- we need some memory for the widgets struct ---- */
 	
-	struct my_widgets *wid = g_malloc (sizeof (struct my_widgets));
+	struct my_widgets *wid = g_malloc(sizeof(struct my_widgets));
 	
 /* ---- create a threaded application ---- */
 	
