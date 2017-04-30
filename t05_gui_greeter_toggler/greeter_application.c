@@ -143,16 +143,16 @@ static void check_button_toggle (GtkWidget *widget, gpointer data)
 		
 		if (radio[0] == TRUE)
 		{
-			gtk_label_set_text(GTK_LABEL(wid->label_gender), " Gender: female");
+			gtk_label_set_text(GTK_LABEL(wid->label_gender), " Gender: F");
 		}
 		
 		if (radio[1] == TRUE)
 		{
-			gtk_label_set_text(GTK_LABEL(wid->label_gender), " Gender: male");
+			gtk_label_set_text(GTK_LABEL(wid->label_gender), " Gender: M");
 		}
 	}
 	
-/* ---- if button is used ---- */
+/* ---- if button is not used ---- */
 	
 	else
 	{
@@ -228,7 +228,7 @@ static void activate (GtkApplication* app, gpointer user_data)
 	
 	gtk_grid_set_column_homogeneous(GTK_GRID (grid), FALSE);
 	gtk_container_add(GTK_CONTAINER(window), grid);
-	gtk_container_set_border_width(GTK_CONTAINER(window), 10);
+	gtk_container_set_border_width(GTK_CONTAINER(window), 30);
 	
 /*------------------------------------------------------------------*/
 /*
