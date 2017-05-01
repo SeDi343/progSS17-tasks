@@ -352,7 +352,7 @@ static void activate (GtkApplication* app, gpointer user_data)
 	
 	g_signal_connect(clr_button, "clicked", G_CALLBACK(clr_clicked), (gpointer)wid);
 	
-/* ---- put a blue okay button to the left side of the header bar ---- */
+/* ---- put a blue okay button to the right side of the header bar ---- */
 	
 	ok_button = gtk_button_new_with_mnemonic("_Okay");
 	context = gtk_widget_get_style_context(ok_button);
@@ -373,8 +373,6 @@ static void activate (GtkApplication* app, gpointer user_data)
 	gtk_css_provider_load_from_resource(GTK_CSS_PROVIDER(provider), "/css_greeter/css_greeter.css");
 	apply_css(window, provider);
 #endif
-	
-/* ---- cant find the reason why background is not loading ---- */
 	
 #if GTK_OLD
 	provider = gtk_css_provider_new();
