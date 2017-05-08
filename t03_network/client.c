@@ -1,6 +1,7 @@
 /* !* SERVER EXECUTING PROGRAM TASK
  *
- * \description Client application to communicate with server
+ * \description Client application to communicate with server with fix
+ *              Hostname and Portadress
  *
  *
  * \author Sebastian Dichler <el16b032@technikum-wien.at> <sedi343@gmail.com>
@@ -58,7 +59,8 @@ int main(int argc, char *argv[])
 		}
 		printf("%s", buffer);
 		
-		if (strncmp(buffer, "Holy Zarquon Singingfish - "BOLD"you got it."RESET"\n\n", sizeof(buffer)) == 0)
+		if (strncmp(buffer, "Holy Zarquon Singingfish - "BOLD"you got it."RESET"\n\n", sizeof(buffer)) == 0 ||
+			strncmp(buffer, "Holy Zarquon Singingfish - you got it.\n\n", sizeof(buffer)) == 0)
 		{
 			exit(EXIT_SUCCESS);
 		}
